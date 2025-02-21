@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Movie Collection</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1c20 0%, #303642 100%);
+            padding: 2rem;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .enter {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        input, select {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select option {
+            background: #303642;
+            color: #fff;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        #btn { background: linear-gradient(to right, #00b09b, #96c93d); }
+        #btn2 { background: linear-gradient(to right, #ff416c, #ff4b2b); }
+        #btn3 { background: linear-gradient(to right, #f7971e, #ffd200); }
+        #btn4 { background: linear-gradient(to right, #2193b0, #6dd5ed); }
+
+        .total-movies {
+            text-align: center;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .display-section {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+
+        .movie-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .movie-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .movie-item.fav {
+            background: linear-gradient(to right, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+            border-left: 4px solid gold;
+        }
+
+        .remove-btn {
+            background: none;
+            padding: 0.5rem;
+            color: #ff416c;
+            font-size: 1.2rem;
+        }
+
+        .remove-btn:hover {
+            transform: scale(1.2);
+            color: #ff4b2b;
+        }
+
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Movie Collection</h1>
+        <div class="enter">
+            <h2>Add a Movie</h2>
+            <div class="input-group">
+                <input type="text" id="enter" placeholder="Enter movie name..." required>
+                <select id="favSelect">
+                    <option value="no">Not Favorite</option>
+                    <option value="yes">Mark as Favorite</option>
+                </select>
+            </div>
+            <div class="button-group">
+                <button id="btn" onclick="addMovie()">Add Movie</button>
+                <button id="btn2" onclick="removeLastMovie()">Remove Last</button>
+                <button id="btn3" onclick="clearAll()">Clear All</button>
+                
+            </div>
+        </div>
+        <div class="total-movies" id="totalMovies">Total Movies: 0</div>
+    </div>
+
+    <div class="display-section" id="displaySection" style="display: none;">
+                <h2>🎥 Movie List</h2>
+        <div class="total-movies" id="displayTotalMovies">Total Movies: 0</div>
+        <div id="displayList"></div>
+    </div>
+
+    <script>
+        let movies = [];
+
+        function addMovie() {
+            let movieName = document.getElementById("enter").value.trim();
+            let favStatus = document.getElementById("favSelect").value;
+
+            if (movieName === "") {
+                alert("Please enter a movie name.");
+                return;
+            }
+            if (movieName.length > 8) {
+                alert("Movie name should be 8 characters or less.");
+                return;
+            }
+
+            let isFavorite = favStatus === "yes";
+            movies.push({ name: movieName, favorite: isFavorite });
+
+            document.getElementById("enter").value = "";
+            updateMovieCount();
+            displayMovies();
+        }
+
+        function removeLastMovie() {
+            if (movies.length > 0) {
+                movies.pop();
+                updateMovieCount();
+                displayMovies();
+            } else {
+                alert("No movies to remove!");
+            }
+        }
+
+        function clearAll() {
+            if (confirm("Are you sure you want to clear all movies?")) {
+                movies = [];
+                updateMovieCount();
+                displayMovies();
+            }
+        }
+
+        function updateMovieCount() {
+            document.getElementById("totalMovies").innerText = `Total Movies: ${movies.length}`;
+            document.getElementById("displayTotalMovies").innerText = `Total Movies: ${movies.length}`;
+        }
+
+        function displayMovies() {
+            let displayListDiv = document.getElementById("displayList");
+            let displaySection = document.getElementById("displaySection");
+
+            displayListDiv.innerHTML = "";
+            displaySection.style.display = "block";
+
+            if (movies.length === 0) {
+                displayListDiv.innerHTML = "<p style='text-align: center; color: rgba(255,255,255,0.6);'>No movies to display.</p>";
+                return;
+            }
+
+            movies.forEach((movie, index) => {
+                let movieItem = document.createElement("div");
+                movieItem.classList.add("movie-item");
+                if (movie.favorite) {
+                    movieItem.classList.add("fav");
+                }
+                movieItem.innerHTML = `
+                    <span>${index + 1}. ${movie.name} ${movie.favorite ? '⭐' : ''}</span>
+                    <button class="remove-btn" onclick="removeSpecificMovie(${index})">×</button>
+                `;
+                displayListDiv.appendChild(movieItem);
+            });
+        }
+
+        function removeSpecificMovie(index) {
+            movies.splice(index, 1);
+            displayMovies();
+            updateMovieCount();
+        }
+    </script>
+</body>
+</html>
